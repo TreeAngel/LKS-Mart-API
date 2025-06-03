@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace LKS_Mart_API.Entities;
 
@@ -19,5 +20,8 @@ public partial class Barang
 
     public long HargaSatuan { get; set; }
 
+    public string Image { get; set; } = null!;
+
+    [JsonIgnore]
     public virtual ICollection<Transaksi> Transaksis { get; set; } = new List<Transaksi>();
 }

@@ -52,6 +52,9 @@ public partial class MartDbContext : Microsoft.EntityFrameworkCore.DbContext
             entity.Property(e => e.Satuan)
                 .HasMaxLength(50)
                 .HasColumnName("satuan");
+            entity.Property(e => e.Image)
+                .HasMaxLength(int.MaxValue)
+                .HasColumnName("image");
         });
 
         modelBuilder.Entity<Log>(entity =>
@@ -144,6 +147,9 @@ public partial class MartDbContext : Microsoft.EntityFrameworkCore.DbContext
             entity.Property(e => e.Username)
                 .HasMaxLength(50)
                 .HasColumnName("username");
+            entity.Property(e => e.Image)
+                .HasMaxLength(int.MaxValue)
+                .HasColumnName("image");
         });
 
         OnModelCreatingPartial(modelBuilder);
