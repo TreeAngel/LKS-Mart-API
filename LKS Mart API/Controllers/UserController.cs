@@ -61,7 +61,7 @@ namespace LKS_Mart_API.Controllers
         {
             try
             {
-                var user = await context.Users.FirstOrDefaultAsync(x => x.Username == request.Username && x.Password == request.Password);
+                var user = await context.Users.FirstOrDefaultAsync(x => x.Username == request.Username && x.Password == request.Password && x.Tipe == "pelanggan");
                 if (user is null)
                 {
                     return Unauthorized("Invalid Credentials");
@@ -128,7 +128,7 @@ namespace LKS_Mart_API.Controllers
             }
         }
 
-        [HttpGet("me"), Authorize]
+        [HttpGet("me"), Authorize(Roles = ("pelanggan"))]
         public async Task<IActionResult> Profile()
         {
             try
@@ -167,7 +167,7 @@ namespace LKS_Mart_API.Controllers
             }
         }
 
-        [HttpPost("upload-profile"), Authorize]
+        [HttpPost("upload-profile"), Authorize(Roles = ("pelanggan"))]
         public async Task<IActionResult> UploadProfile(IFormFile image)
         {
             try
@@ -221,7 +221,7 @@ namespace LKS_Mart_API.Controllers
             public int Qty { get; set; }
         }
 
-        [HttpPost("checkout"), Authorize]
+        [HttpPost("checkout"), Authorize(Roles = ("pelanggan"))]
         public async Task<IActionResult> Checkout([FromBody] List<CheckoutItem> request)
         {
             try
@@ -259,6 +259,8 @@ namespace LKS_Mart_API.Controllers
                         PelangganId = customer.Id,
                         BarangId = product.Id,
                     };
+                    product.Jumlah -= item.Qty;
+                    context.Barangs.Update(product);
                     await context.Transaksis.AddAsync(transaction);
                 }
                 await context.SaveChangesAsync();
